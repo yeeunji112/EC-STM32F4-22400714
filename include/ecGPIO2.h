@@ -56,7 +56,7 @@ uint32_t  digitalRead(PinName_t pin);
 
 // FND for JKIT board 
 extern int numberFND[12][8];
-void FND_init(PinName_t *pinFND);
+void FND_display_init(PinName_t *pinFND);
 void FND_select_init(PinName_t *selectFND);
 void FND_display(uint8_t num);
 void FND_select(uint8_t digit);

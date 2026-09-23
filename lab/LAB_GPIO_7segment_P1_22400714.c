@@ -5,22 +5,23 @@ Created          : 05-03-2021
 Modified         : 17-09-2026 
 Language/ver     : C++ in VS Code
 
-Description      : LAB_GPIO_7segment_22400714
+Description      : LAB_GPIO_7segment_22400714 (SHOW 50)
 /----------------------------------------------------------------*/
 
 #include "stm32f4xx.h"
 #include "ecGPIO2.h"
 #include "ecRCC2.h"
 
+//problem 1 - show "50"
 PinName_t pinFND[8]    = {PB_0, PB_1, PB_2, PB_3, PB_4, PB_5, PB_6, PB_7};
 PinName_t selectFND[4]= {PA_10, PA_11, PC_4, PC_3};
-// [YOUR CODE GOES HERE]
+
 
 void setup(void){
     // Intialize System Clock
     RCC_HSI_init();    
     // Intialize FND pins OUT
-    FND_init(pinFND);
+    FND_display_init(pinFND);
       for(int i = 0 ; i<8;i++){
         //push-pull
         GPIO_otype(pinFND[i],0);
@@ -52,5 +53,4 @@ int main(void) {
     }
   
 }
-
 

@@ -152,7 +152,7 @@ int numberFND[12][8]={
                   
 
 // Initialize DOUT pins for 7 segment leds
-void FND_init(PinName_t *pinFND){
+void FND_display_init(PinName_t *pinFND){
 	for (int i=0; i<8; i++){
 		_fndPins[i] = pinFND[i];
 		GPIO_init(_fndPins[i], OUTPUT);
