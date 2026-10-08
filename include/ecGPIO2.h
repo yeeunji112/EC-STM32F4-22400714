@@ -61,6 +61,8 @@ void FND_select_init(PinName_t *selectFND);
 void FND_display(uint8_t num);
 void FND_select(uint8_t digit);
  
+//LED TOGGLE
+void led_toggle(PinName_t pinName);
 
 #ifdef __cplusplus
 }

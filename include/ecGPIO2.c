@@ -170,7 +170,7 @@ void FND_select_init(PinName_t *selectFND){
 
 }
 
-// Display a number 0 - 9 only
+// Display a number 0 - 9 only(for문은 0부터 7까지)
 void FND_display(uint8_t num){
 for(int i = 0 ; i<8; i++){
 	 GPIO_write(_fndPins[i],numberFND[num][i]);	
@@ -195,4 +195,11 @@ void FND_select(uint8_t digit){
 
 
 
+void led_toggle(PinName_t pinName){
+	GPIO_TypeDef *Port;    
+	unsigned int pin;
+	ecPinmap(pinName,&Port,&pin);
+    
+    Port-> ODR ^= (1UL<<pin);
 
+}
