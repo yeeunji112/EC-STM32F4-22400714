@@ -80,4 +80,24 @@ uint32_t SysTick_val(void) {
 }
 
 
+// Blocking delay in microseconds
+// void delay_us(uint32_t usec)
+// {
+//     uint32_t ticksPerUs = (uint32_t)EC_SYSCLK / 1000000UL;
+//     uint32_t reload = SysTick->LOAD + 1UL;
+//     uint32_t previous = SysTick->VAL;
+//     uint64_t elapsedTicks = 0;
+//     uint64_t targetTicks = (uint64_t)usec * ticksPerUs;
 
+//     while (elapsedTicks < targetTicks)
+//     {
+//         uint32_t current = SysTick->VAL;
+
+//         if (previous >= current)
+//             elapsedTicks += previous - current;
+//         else
+//             elapsedTicks += previous + reload - current;
+
+//         previous = current;
+//     }
+// }

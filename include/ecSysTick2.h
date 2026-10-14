@@ -30,6 +30,9 @@ void delay_ms(uint32_t msec);
 void SysTick_reset(void);
 uint32_t SysTick_val(void);
 
+/////
+//void delay_us(uint32_t usec);
+///
 
 #ifdef __cplusplus
 }
