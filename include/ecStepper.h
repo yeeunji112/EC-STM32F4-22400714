@@ -24,8 +24,8 @@ Description      : Stepper Library.
 // Stepper Mode
 #define HALF 0
 #define FULL 1	 
-#define DIR_CW 0
-#define DIR_CCW 1	  
+#define DIR_CW 1 //바꿈
+#define DIR_CCW 0 //바꿈	  
 
 // Stepper Motor Spec
 // 28BYJ-48 : 64 steps/rev x 1/32 gear = 2048 

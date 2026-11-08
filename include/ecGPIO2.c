@@ -203,3 +203,24 @@ void led_toggle(PinName_t pinName){
     Port-> ODR ^= (1UL<<pin);
 
 }
+
+
+// // num을 digits 자리로 표시 (0번 select = 일의 자리)
+// // 한 번 호출에 digits ms 걸림 → while 안에서 계속 호출해야 함
+//예시
+//while(1){
+//     FND_display_num(count, 2);   // 두 자리 표시
+// }
+// void FND_display_num(uint32_t num, uint8_t digits){
+//     for(uint8_t i = 0; i < digits; i++){
+//         FND_select(i);
+//         FND_display(num % 10);
+//         num /= 10;
+//         delay_ms(1);
+//     }
+// }
+
+// // 모든 세그먼트 끄기 (numberFND[11] = blank)
+// void FND_clear(void){
+//     FND_display(11);
+// }

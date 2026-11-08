@@ -5,7 +5,8 @@ Created          : 05-03-2021
 Modified         : 17-09-2026 
 Language/ver     : C++ in VS Code
 
-Description      : LAB_GPIO_7segment_22400714 (Counter with button)
+Description      : LAB_GPIO_7segment_22400714 (Counter with button) 
+//extra - button 누르면 count되기 두자리수 
 /----------------------------------------------------------------*/
 
 #include "stm32f4xx.h"
@@ -17,6 +18,9 @@ PinName_t pinFND[8]    = {PB_0, PB_1, PB_2, PB_3, PB_4, PB_5, PB_6, PB_7};
 PinName_t selectFND[4]= {PA_10, PA_11, PC_4, PC_3};
 uint8_t numDisplay[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
+
+//RCC_HIS_init, gpio_init, fnd_select_init, fnd_displaly_init
+//버튼을 누르고 있어도 숫자가 한번만 증가 
 void setup(void){
     // Intialize System Clock
     RCC_HSI_init();    
@@ -59,6 +63,9 @@ int main(void) {
         
         //show '0' first 
         FND_select(selectFND0);
+
+        //이게 multiLED랑 다른거는 이 함수안에 숫자를 바꾸는거고
+        //led는 다 끄고 해야되는거 
         FND_display(numDisplay[increase]);
 
         if(GPIO_read(BUTTON_PIN) == LOW){ 
@@ -79,8 +86,44 @@ int main(void) {
             //to avoid debouncing 
          delay_ms_HSI(50);	
 
-
     }
 }
 
     
+///// extra incrase는 동일 근데 십,일의자리를 수학계산을 다르게 
+// int main(void){
+
+//     setup();
+
+//     int increase = 0;
+//     int pressed = 0;
+
+//     while(1){
+
+//         // Ones digit (0~9)
+//         FND_select(0);
+//         FND_display(increase % 10);
+//         delay_ms_HSI(1);
+
+//         // Tens digit (0~9)
+//         FND_select(1);
+//         FND_display(increase / 10);
+//         delay_ms_HSI(1);
+        //십의자리, 백의자리는 /100, 천의자리는/1000 
+//    FND_display((increase / 10) % 10);
+
+//         // Button pressed (Active-Low)
+//         if(GPIO_read(BUTTON_PIN) == LOW){
+
+//             if(pressed == 0){
+
+//                 increase = (increase + 1) % 100; //100에서 네개면 10000으로
+
+//                 pressed = 1;
+//             }
+//         }
+//         else{
+//             pressed = 0;
+//         }
+//     }
+// }

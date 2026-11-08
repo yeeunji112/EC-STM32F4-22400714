@@ -25,6 +25,7 @@ void setup(void){
       for(int i = 0 ; i<8;i++){
         //push-pull
         GPIO_otype(pinFND[i],0);
+        //Medium speed
         GPIO_ospeed(pinFND[i],1);
 
     } 
@@ -32,6 +33,7 @@ void setup(void){
     //SELECT intialize
     FND_select_init(selectFND);   
        for(int i = 0 ; i<4;i++){
+        //PUSH PULL
        GPIO_otype(selectFND[i],0);
     }  
 };
@@ -46,7 +48,9 @@ int main(void) {
     while (1) {
         FND_select(selectFND1);
         FND_display(numDisplay1);
-        delay_ms_HSI(1);             		
+        delay_ms_HSI(1);    
+        
+        //mutliplexing
         FND_select(selectFND2);
         FND_display(numDisplay2);
         delay_ms_HSI(1);	

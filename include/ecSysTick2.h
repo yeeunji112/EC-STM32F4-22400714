@@ -33,6 +33,7 @@ uint32_t SysTick_val(void);
 /////
 //void delay_us(uint32_t usec);
 ///
+uint32_t timer_check(uint32_t *last, uint32_t interval);
 
 #ifdef __cplusplus
 }

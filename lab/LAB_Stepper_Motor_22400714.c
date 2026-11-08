@@ -27,7 +27,8 @@ volatile uint8_t stop = 0 ;
 // Select stepping mode: FULL or HALF
 uint32_t mode = FULL;
 
-// Initialiization 
+// Initialiization
+//stepper_init이 생김  
 void setup(void){	
 	RCC_PLL_init();                                 // System Clock = 84MHz
 	SysTick_init();                                 // Systick init
@@ -37,7 +38,7 @@ void setup(void){
 
 	
 	stepper_init(mode, pinStepper); 				// Stepper GPIO pin initialization
-	stepper_speed(14);                 		//  set stepper motor speed(based on selected stepping mode
+	stepper_speed(1);                 		//  set stepper motor speed based on selected stepping mode
 }
 
 int main(void) { 
@@ -60,20 +61,20 @@ int main(void) {
 	
 
 	//if you want to see only one revolution use below code and in while, it should be empty
-	//just for demo video.
-	stepper_step(steps, DIR_CW); 
-	stepper_stop();
+	//just for demo video. //in code cw --> real motor --> ccw 
+	// stepper_step(steps, DIR_CW); 
+	// stepper_stop();
 
 	// Inifinite Loop ----------------------------------------------------------
 	//continuous motor rotation with button control
 	while(1){
 	
-		// if(stop== 0){
-		// 	//Rotate the motor ocnterclockwise
-		// 	stepper_step(steps, DIR_CW); 
-		// }else{
-		// 	stepper_stop(); // Keep all motor coils OFF while stopped
-		// }
+		if(stop== 0){
+			//Rotate the motor ocnterclockwise
+			stepper_step(steps, DIR_CW);  // in code cw --> real motor : ccw 
+		}else{
+			stepper_stop(); // Keep all motor coils OFF while stopped
+		}
    
 	
 	}

@@ -57,7 +57,7 @@ void SysTick_counter(void){
 	msTicks++;
 }	
 
-// Blocking delay in milliseconds
+// Blocking delay in milliseconds, 1초가 1000ms이다
 void delay_ms (uint32_t msec){
   	uint32_t curTicks;
   	curTicks = msTicks;
@@ -81,23 +81,49 @@ uint32_t SysTick_val(void) {
 
 
 // Blocking delay in microseconds
+
 // void delay_us(uint32_t usec)
 // {
-//     uint32_t ticksPerUs = (uint32_t)EC_SYSCLK / 1000000UL;
+//     // Calculate SysTick ticks per microsecond (EC_SYSCLK = 84 MHz)
+//     uint32_t tickus = EC_SYSCLK / 1000000UL;
+
+//     // Get the full SysTick period, including zero
 //     uint32_t reload = SysTick->LOAD + 1UL;
-//     uint32_t previous = SysTick->VAL;
-//     uint64_t elapsedTicks = 0;
-//     uint64_t targetTicks = (uint64_t)usec * ticksPerUs;
 
-//     while (elapsedTicks < targetTicks)
+//     // Save the initial counter value
+//     uint32_t last = SysTick->VAL;
+
+//     // Set the elapsed ticks to zero and calculate required ticks
+//     uint64_t total = 0;
+//     uint64_t required = (uint64_t)usec * tickus;
+
+//     // Repeat until the required ticks have passed
+//     while (total < required)
 //     {
-//         uint32_t current = SysTick->VAL;
+//         // Read the current SysTick value
+//         uint32_t now = SysTick->VAL;
+//         uint32_t diff;
 
-//         if (previous >= current)
-//             elapsedTicks += previous - current;
+//         // Calculate ticks passed since the last reading
+//         if (last >= now)
+//             diff = last - now;
 //         else
-//             elapsedTicks += previous + reload - current;
+//             diff = reload - now + last; // When SysTick reloads
 
-//         previous = current;
+//         // Add the elapsed ticks and update the previous value
+//         total += diff;
+//         last = now;
 //     }
 // }
+
+
+// interval[ms]이 지났으면 1을 반환하고 기준 시각을 갱신, 아니면 0
+//HEADER FILE 추가
+// 예: if(timer_check(&lastBlink, 500)) led_toggle(PA_5);
+uint32_t timer_check(uint32_t *last, uint32_t interval){
+    if(msTicks - *last >= interval){
+        *last = msTicks;
+        return 1;
+    }
+    return 0;
+}

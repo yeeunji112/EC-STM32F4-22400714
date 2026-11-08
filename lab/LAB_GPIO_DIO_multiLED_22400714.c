@@ -5,7 +5,7 @@ Created          : 05-03-2021
 Modified         : 13-09-2026
 Language/ver     : C++ in VS Code
 
-Description      : LAB_GPIO_DIO_multiLED
+Description      : LAB_GPIO_DIO_multiLED 누를때마다 버튼 하나씩 증가
 /----------------------------------------------------------------*/
 
 #include "ecRCC2.h"
@@ -32,6 +32,7 @@ int main(void) {
     // Infinite Loop ---------------------------------------------------------
     while(1) {
 
+        //HIHG가 아니라 LOW여야 버튼핀이 눌린거임, PULL UP 때문에 그래 
         if(GPIO_read(BUTTON_PIN) == LOW) {       // button pressed (active-low)
 
             if(change == 0) {
@@ -63,11 +64,11 @@ void setup(void)
 {
     RCC_HSI_init();
 
-    
+    //BUTTON은 인풋으로 GPIO INIT해주기
     GPIO_init(BUTTON_PIN, INPUT);       // Calls RCC_GPIOA_enable()
     GPIO_pupd(BUTTON_PIN, 1);           // Pull-up
 
-   
+   //네개니까 FOR문으로 INITALIZATION해주기 
     for(int i = 0; i < NUM; i++) {
 
         GPIO_init(LED_PIN[i], OUTPUT);   // Calls RCC_GPIOB_enable()

@@ -80,6 +80,7 @@ void stepper_init(uint32_t mode, PinName_t *pinStepper){
 // }
 
 //delay_ms 사용한다면 이걸로
+//여기서 *2부분 빼게된다면 영상랩처럼 됨 
 void stepper_speed(uint32_t speedRPM) {
     uint32_t stepsneed;
 
@@ -159,5 +160,5 @@ void stepper_stop(void) {
 
 }
 
-
+//1스텝씩 돌리기 세트를 아예 정의하기 
 

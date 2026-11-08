@@ -5,9 +5,9 @@ Created          : 05-03-2021
 Modified         : 10-05-2026
 Language/ver     : C++ in VS Code
 
-Description      : LAB -  EXTI 7 segment (show 0~9 and repeat)
+Description      : LAB -  EXTI 7 segment (show 0~9 and repeat + pause + reset)
 /----------------------------------------------------------------*/
-
+//여기선 setup에서 exti_init이 추가됨 
 
 // #include "ecRCC2.h"
 // #include "ecGPIO2.h"
@@ -16,7 +16,7 @@ Description      : LAB -  EXTI 7 segment (show 0~9 and repeat)
 
 #include "ecSTM32F4v2.h"
 
-#define SW2_PIN    PA_4			//EVAL board JKIT SW2
+#define SW2_PIN    PA_4			//EVAL board JKIT SW2, pause
 
 #define  SW1_PIN        PD_2      // sw1, reset 
 
@@ -36,9 +36,11 @@ volatile int pause = 0 ;
 // Initialiization 
 void setup(void)
 {
+
+    //RCC_HIS init --> 시스템 클럭 16mhz. PLL--> 84MHZ, systick --> delay ms 사용    
     // RCC_PLL_init();                 // System Clock = 84MHz
     // SysTick_init();                 // SysTick Timer Initialization
-
+    
     MCU_init();                        
 
 
@@ -96,7 +98,7 @@ int main(void) {
           
             change = 0;
             continue;  //skip the increment below and  restart counting from 0
-
+                //change가 계속 1이지만 0으로 만들어주면서 다시 세기 가능  
         }
 
 
@@ -104,6 +106,7 @@ int main(void) {
         if( pause == 1 ){  
             //FND_display(increase);   
             continue; //skip the increment below t keep the counter paused
+            //여기서는 pause=0으로 안만들어주니까 가만히 있게됨
         }
         //increase from 0 to 9 and repeat
         increase = (increase + 1) % 10;

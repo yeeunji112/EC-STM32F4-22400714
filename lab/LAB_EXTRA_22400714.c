@@ -5,7 +5,7 @@ Created          : 05-03-2021
 Modified         : 10-05-2026
 Language/ver     : C++ in VS Code
 
-Description      : LAB -  EXTI 7 segment (0~59)
+Description      : LAB -  EXTI 7 segment (0~59) 
 /----------------------------------------------------------------*/
 
 
@@ -84,9 +84,11 @@ int main(void) {
  
 
 	while (1){
-        
+        //1초씩 증가하게 만들려고 
         //1ms가 두개 즉, 2ms 이니까. 1000ms 만들기 위해 for문은 500까지 돌림 
         //multiplexing 사용 
+        //2초씩 증가하고 싶으면i를 500에서 1000으로 바꾼다 
+        //네자리 쓴다면 1+1+1+1 4초니까 1000/4 함. 2초면 2000/4
         for(int i = 0 ; i< 500; i++){
             FND_select(selectFND1); 
             FND_display(numDisplay1);
