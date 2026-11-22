@@ -23,7 +23,7 @@ Description      : EC PROJECT 1 - SMARTFARM
 #define LED_panel          PB_7 //Gro=light LED panel(PWM)
 #define LED_PIN    PA_5 //LD2
 #define button_pin         PC_13 //User button (B1)
-#define DHT11_PIN          PA_6 //On-board LED(LD2)
+#define DHT11_PIN          PA_6 //DHT11 data (D12
 
 #define photo_block         3600 // WHEN SENSOR IS COVERED(dark)
 #define photo_unblock        1300 // when sensor is not covered (bright)
@@ -196,9 +196,7 @@ int main(void){
         
             auto_soil(); //soil checks run in both modes 
             print_LCD();
-            printf("[%s] light=%lu\r\n",
-       (mode_flag == 0) ? "AUTO" : "MANUAL",
-       light);
+            // printf("[%s] light=%lu\r\n",(mode_flag == 0) ? "AUTO" : "MANUAL",light);
             
         }
     }
@@ -285,7 +283,6 @@ void AUTO_led(void){
             //and always print when it reaches exactly 100%
             
             else{
-                //이부분이 10확실히 100퍼센트일때 하고 싶어석
                 if(saved_duty>=prev_duty+0.1f||saved_duty<prev_duty - 0.1f||(saved_duty == 1 && prev_duty < 1)){
                     sprintf(led_msg,"[AUTO] LED_duty = %d%%\r\n",(int)(saved_duty * 100));
                     USART_write(USART6, (uint8_t*)led_msg, strlen(led_msg));
@@ -306,7 +303,7 @@ void AUTO_led(void){
 
 
 //Read the DHT11 sensor
-//called every 500 ms but actaully read as 2.5 ms
+//called every 500 ms but actaully read as 2.5 s
 void read_dht11(void){
 //2초당
     static int err = 0;
