@@ -2,7 +2,7 @@
 @ Embedded Controller by Young-Keun Kim - Handong Global University
 Author           : YeeunJi
 Created          : 05-03-2021
-Modified         : 10-05-2026
+Modified         : 11-06-2026
 Language/ver     : C++ in VS Code
 
 Description      : LAB -  PWM RC 
@@ -50,9 +50,9 @@ int main(void) {
         
         
         //PULSE WIDTH
-        //pw_us = 500+(2000/180)*angle;; --> 오차가 큼. 
+        //pw_us = 500+(2000/180)*angle;;  
         //PWM_pulsewidth()
-        //pulse width (US 기준)   - 정수로 정의되어있기 때문에 us가 편함 + 정수나눗셈 오차 줄이기 위해
+        //pulse width 
         
         //Reset the servo angle to 0 when the button is pressed 
         if(change == 1){

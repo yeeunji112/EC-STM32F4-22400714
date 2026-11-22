@@ -2,7 +2,7 @@
 @ Embedded Controller by Young-Keun Kim - Handong Global University
 Author           : YeeunJi
 Created          : 05-03-2021
-Modified         : 11-05-2026
+Modified         : 11-06-2026
 Language/ver     : C++ in VS Code
 
 Description      : LAB -  PWM DC (FAN CONTROLLING)
@@ -16,7 +16,6 @@ Description      : LAB -  PWM DC (FAN CONTROLLING)
 #define Direction_Pin        PC_2
 #define proximity            PA_4      //selected IR proximity sensor pin
 #define LED_PIN              PA_5      // LED (LD2)
-#define OBJECT_DETECTED()   (GPIO_read(proximity) != 0)   // CdS : dark -> HIGH
 
 //FSM state defnition
 #define S0    0
@@ -62,10 +61,10 @@ state_table table[3]={
 };
 
 
-volatile uint32_t mode = S0;
-volatile uint32_t pause = 0;
-volatile uint32_t PW = 0;
-volatile uint32_t X = 0;
+volatile uint32_t mode = S0;          //current state
+volatile uint32_t pause = 0;         //pause flag
+//volatile uint32_t PW = 0;             //not used here
+volatile uint32_t X = 0;              //button flag 
 
 // Initialization
 void setup(void){
@@ -198,6 +197,8 @@ void TIM3_IRQHandler(void) {
     }
 }
 
+//if(timer_check(&last_button, 200)이거같은 경우 BUTTON CHATTERING을 위한 디바운싱
+
 //EXTI interrupt for BUTTON CHANGES MODE & button input: X
 void EXTI15_10_IRQHandler(void) {  //careful for pin number
   static uint32_t last_button = 0;
@@ -222,3 +223,25 @@ void USART2_IRQHandler(){       // USART2 RX Interrupt
 		 
   }
 }
+
+
+
+// //만약 3초마다이면
+// void TIM3_IRQHandler(void){
+//     if (is_UIF(TIM3)) {
+//         clear_UIF(TIM3);
+//         if(pause==1){
+//             tick++;
+//             if(tick<=6){
+//                 GPIO_write(LED_PIN,0);
+//             }else{ 
+//                 GPIO_write(LED_PIN,HIGH);
+                
+//                 if(tick>=12){
+//                     tick=0;
+//                 }
+//             }
+//             //led toggle말고도 다른방법 사용해보기
+//         }
+//     }
+// }

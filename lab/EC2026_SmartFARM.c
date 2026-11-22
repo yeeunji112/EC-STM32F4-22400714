@@ -27,12 +27,12 @@ Description      : EC PROJECT 1 - SMARTFARM
 
 #define photo_block         3600 // WHEN SENSOR IS COVERED(dark)
 #define photo_unblock        1300 // when sensor is not covered (bright)
-#define temp_high          29//upper temperature limit
-#define temp_low           27 // lower temperature limi
+#define temp_high          28//upper temperature limit
+#define temp_low           26 // lower temperature limi
 #define soil_recovery      2100  //below this, soil is considered wet
 #define soil_dry           3000//upper this, soil is dry
-#define humid_high          47 //upper humid
-#define humid_low          44//lower humid
+#define humid_high          42 //upper humid
+#define humid_low          38//lower humid
 
 
 

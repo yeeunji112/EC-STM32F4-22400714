@@ -11,7 +11,11 @@ Description      : Tutorial - Timer Input Capture example 1
                    A test PWM signal is generated on PA_6 (TIM3_CH1) 
                    Connect  PA_5 --> PA_6  
                    measure whole period
+                   Measure the HIGH pulse width from a rising edge to the following falling edge using two capture channels on the same input.
 /----------------------------------------------------------------*/
+
+//이거는 주기를 새는 코드 
+//cap prev와 cap curr둘다 rising이라는점 
 
 #include "stm32f411xe.h"
 #include "ecGPIO2.h"
@@ -26,8 +30,8 @@ Description      : Tutorial - Timer Input Capture example 1
 #define PWM_PIN     PA_6        // TIM3_CH1 : TRIG test signal (jumper PA_6 -> PB_6)
 #define LED_PIN     PA_5  
   
-uint32_t pwm_period_ms=50;
-uint32_t uTick=100;
+uint32_t pwm_period_ms=1000; //1kHz
+uint32_t uTick=100;          //100us counter tick
 uint32_t timer_arr  = 65536;    // ticks per counter wrap (ARR+1)
 
 volatile uint32_t ovf_cnt = 0;      //counts overflows

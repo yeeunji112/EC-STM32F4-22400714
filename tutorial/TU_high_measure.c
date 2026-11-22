@@ -17,6 +17,11 @@ Description      : Tutorial - Timer Input Capture example 2
  only measure high part
 /----------------------------------------------------------------*/
 
+
+//Measure the period between consecutive rising edges using input capture.
+
+//이건 50ms인 pwm period에서 high를 재고싶을대하는 코드
+
 #include "stm32f411xe.h"
 #include "ecGPIO2.h"
 #include "ecRCC2.h"
@@ -96,6 +101,7 @@ void TIM4_IRQHandler(void){
         clear_CCIF(TIM4,IC_1);                                
     }
     // Falling edge captured on IC2
+    //FALLING EDGE가 DETECTED이라서 OVF_COUNT가 여기서 리셋된다.
     if(is_CCIF(TIM4, IC_2)){                // IC2 : falling edge, SAME pin (TI1)       
         cap_curr = ICAP_read(ICAP_PIN, IC_2);
 
@@ -107,3 +113,5 @@ void TIM4_IRQHandler(void){
         clear_CCIF(TIM4, IC_2);
     }   
 }
+
+//cap curr가 falling cap prev가 rising

@@ -9,10 +9,11 @@ Description      : bluetooth cononection
 /----------------------------------------------------------------*/
 
 
-
-//J, cw direction
-//k, ccw direction
-//p, emergency stop 
+//check the bluetooth connection L이랑 h 를 pc에서 보냄으로써
+//connect stepper motor 해서
+//J면 cw direction
+//k면 ccw direction
+//p면 emergency stop 
 #include "ecSTM32F4v2.h"
 
 
@@ -20,7 +21,7 @@ Description      : bluetooth cononection
 PinName_t pinStepper[4]    = {PB_10,PB_4,PB_5,PB_3};
 //URAT receive data
 static volatile uint8_t PC_Data = 0;
-static volatile uint8_t BT_Data = 0;
+static volatile char BT_Data = 0;
 
 //stepper motor control variables
 volatile uint32_t steps; 
@@ -64,17 +65,6 @@ void setup(void){
 
 int main(void){	
 	setup();
-    int32_t rev=2;           // REQUIRED - two revolution
-
-    //calculate the required steps based on the stepping mode
-	if (mode == FULL){
-		//Full step = 2048 steps per revolution
-		steps = STEP_PER_REV*rev;
-	}
-	else{
-		//half-step : 4096 steps per revolution
-		steps=STEP_PER_REV*2*rev;
-	}
 
     
 	printf("MCU Initialized\r\n");	 //display on stm terminal
@@ -83,42 +73,10 @@ int main(void){
     USART1_write(BTin, sizeof(BTin)-1);// display on bluetooth terminal
 	while(1){
 		
-       // Execute clockwise rotation when J is received
-        if(right == 1){
-
-            // Clear the command flag before starting rotation
-            right = 0;
-
-            // Record the current rotation direction
-            dir = 1;
-             // Rotate two revolutions in the CW direction
-            stepper_step(steps, DIR_CW);  
-          
-            // Reset direction after rotation if unchanged 
-            if(dir == 1){
-                dir = 0;
-            }
-        }
-        // Execute counterclockwise rotation when K is received
-        if(left == 1){
-            // Clear the command flag before starting rotation
-            left = 0;
-            // Record the current rotation direction
-            dir = 2;
-             // Rotate two revolutions in the CCW direction
-            stepper_step(steps, DIR_CCW);  
-             // Reset direction after rotation if unchanged
-            if(dir == 2){
-                dir = 0;
-            }
-
-        }
-         
+     
 	}
 	
 	
-
-
 }
 
 // USART2 RX interrupt: Read and discard unused PC input
@@ -136,8 +94,7 @@ void USART1_IRQHandler(){
 		// Read a character received through Bluetooth
         BT_Data = USART1_read();				// RX from other MCU UART1	
         
-        
-       
+    
 
        // Handle newline characters on both terminals
        if(BT_Data == '\r' || BT_Data == '\n'){
@@ -158,39 +115,20 @@ void USART1_IRQHandler(){
        }
 
          // LED control: L = OFF, H = ON
-        if(BT_Data == 'L'){
+        if(BT_Data == '0'){
             GPIO_write(LED_PIN,LOW);
-        }else if(BT_Data == 'H'){
+            //PWM_duty(LED_panel,1.0);
+           
+        }else if(BT_Data == '1'){
             GPIO_write(LED_PIN,HIGH);
-        }
+            //PWM_duty(LED_panel,0);
 
-        // Stop the current rotation if the opposite direction is requested
-        if((BT_Data == 'J' && dir == 2) || (BT_Data == 'K' && dir == 1)) {
-            
-           stepper_stop();
+  
         }
-        // J: Request clockwise rotation
-          if(BT_Data == 'J'){
-           
-            right = 1;
-            left = 0;
-        }
-        // K: Request counterclockwise rotation
-         else if(BT_Data == 'K'){
-           
-            left = 1;
-            right = 0;
-        }else if(BT_Data == 'P'){
-           // P: Emergency stop
-            stepper_stop();
-            // Stop the motor and clear pending rotation commands
-            right = 0;
-            left = 0;
-            dir = 0;
-        } 
-        
-	}
+    }
 }
-
-
-
+//  if(BT_Data>='0' && BT_Data<='9'){
+//             //이거는 test하기 힘들어
+//             float value = (float)(BT_Data-'0'); //
+//             float BT_duty=value*0.1;
+//             PWM_duty(LED_panel,BT_duty);

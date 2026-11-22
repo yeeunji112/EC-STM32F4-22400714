@@ -59,14 +59,26 @@ void PWM_init_config(PinName_t pinName, uint32_t usec){
 	//                            			65 < msec <65,536 msec	-> TIM_init() 
 	if((TIMx == TIM2) || (TIMx == TIM5) || (usec <= 65536)){
 		TIM_init_us(TIMx, usec);					
-	}
+	} 
 	else {
+		//TIM_init & TIM_period 혼합
+		//65.5ms < period <= 655ms : for 10us tick
+		if(usec <= 655360){
+			TIM_clock_enable(TIMx);                  // enable timer clock
+			TIMx->PSC = EC_SYSCLK / 100000UL - 1;    // 84MHz / 840 = 100kHz (counter clock = 100kHz)
+			TIMx->ARR = usec / 10 - 1;               // period in 10us ticks (100ms -> 9999)
+			TIMx->CR1 &= ~TIM_CR1_DIR;               // up-counter
+			TIMx->CR1 |= TIM_CR1_CEN;                // counter enable
+		}else{
+
+
 		uint32_t msec = usec / 1000;
 		if(msec > 6553) msec = 6553;			// 16-bit ARR has limit of 6.5sec
 		  				// 65 < msec <65,536 msec	-> TIM_init() 	
 
 		
 		TIM_init(TIMx,msec); 
+		}
 	}
 // 4. Configure Timer Output mode as PWM
 	// Default: PWM Mode 1, active high, duty ratio = 50%
