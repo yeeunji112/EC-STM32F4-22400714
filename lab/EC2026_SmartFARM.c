@@ -19,55 +19,55 @@ Description      : EC PROJECT 1 - SMARTFARM
 
 
 #define ventfan           PA_15 //pwm
-#define window             PC_7 //window servo motor(PWM)
-#define LED_panel          PB_7 //Gro=light LED panel(PWM)
+#define window             PC_7 //window servo(PWM)
+#define LED_panel          PB_7 //LED panel(PWM)
 #define LED_PIN    PA_5 //LD2
 #define button_pin         PC_13 //User button (B1)
-#define DHT11_PIN          PA_6 //DHT11 data (D12
+#define DHT11_PIN          PA_6 //DHT11 data 
 
-#define photo_block         3600 // WHEN SENSOR IS COVERED(dark)
-#define photo_unblock        1300 // when sensor is not covered (bright)
-#define temp_high          28//upper temperature limit
-#define temp_low           26 // lower temperature limi
-#define soil_recovery      2100  //below this, soil is considered wet
-#define soil_dry           3000//upper this, soil is dry
-#define humid_high          42 //upper humid
-#define humid_low          38//lower humid
+#define photo_block         3600 // dark
+#define photo_unblock        1300 // bright
+#define temp_high          28//temp high limi
+#define temp_low           26 // temperature  low limi
+#define soil_recovery      2100  //below this, soil is wet
+#define soil_dry           3000//upper, dry
+#define humid_high          42 //humid high
+#define humid_low          38//humidlow
 
 
 
 
 // GLOABL VAIRABLES
-static volatile char BT_Data = 0; //last character recived over bluetooth
-volatile float saved_duty = 0;  //computed in AUTO mode
-volatile float prev_duty = 0;  //LED duty from the previous control cycle
+static volatile char BT_Data = 0; //last BT char
+volatile float saved_duty = 0;  //AUTO duty(now)
+volatile float prev_duty = 0;  //AUTY duty(LAST)
 
 
-volatile uint32_t  bt_flag = 0;  // set by USART6 ISR when a new character arrives 
+volatile uint32_t  bt_flag = 0;  // new BT char
 
-volatile uint32_t light = 0;  //latest photo sensor ADC vlaue
-volatile uint32_t water = 0;  //Latest soil moisture ADC value
- volatile uint32_t tick_flag = 0; //set every 500 ms by TIM1 ISR
-PinName_t seqCHn[2] = {PA_0, PA_1}; // photo sensor -> pa_0, soil sensor-> pa_1
+volatile uint32_t light = 0;  //photo sensor ADC
+volatile uint32_t water = 0;  //soil sensor
+ volatile uint32_t tick_flag = 0; //500 ms tick
+PinName_t seqCHn[2] = {PA_0, PA_1}; // JADC: light, soil
 
-volatile uint32_t window_open = 0 ; // 1 = window is opened, 0 = closed
+volatile uint32_t window_open = 0 ; // 1 = window open
 
 
-volatile uint32_t cont_dry =0;  //1 = soil was dry in the latest reading
-volatile uint32_t cont_recovery = 0; //1 = soil was in the wet range 
-volatile uint32_t alarm_flag = 0; //1 = soild dry alarm is active
+volatile uint32_t cont_dry =0;  //was in dry range
+volatile uint32_t cont_recovery = 0; //wet range
+volatile uint32_t alarm_flag = 0; //1 = dry alarm
 volatile uint32_t mode_flag= 1;      //to start with manual, 0 is AUTO
-volatile uint32_t ack_message =0 ; // for ('k') to know the alarm and stop message
-volatile uint32_t  mode_count =0;  //counting from MANUAL to AUTO (5 SEC)
-volatile  float value = 0 ;    //value in BLuetooth digit
-volatile uint32_t hystery = 100; //for LED, photo sensor thresholds
+volatile uint32_t ack_message =0 ; // k pressed
+volatile uint32_t  mode_count =0;  // AUTO (5 SEC)
+volatile  float value = 0 ;    //BT digit
+volatile uint32_t hystery = 100; //light hystersis
 
 volatile uint32_t dht_flag = 0;   //checking if it is a fault state
-volatile float manual_duty  = 0;  //led duty set by manual mode
+volatile float manual_duty  = 0;  //manual duty
 char lcd_line[20];              
-volatile uint32_t alarm_blink = 0;   //blink for the alarm (used in led, lcd)
+volatile uint32_t alarm_blink = 0;   //alarm blink counter
 
-volatile uint32_t vent_flag = 0;      //vent is running or not
+volatile uint32_t vent_flag = 0;      //fan run
         
 volatile uint32_t led_count = 0;       //for minimum led on time
  
